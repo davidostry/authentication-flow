@@ -11,5 +11,7 @@ export async function createUser(userName, email, hash) {
 export async function findUser(email) {
   const normalizedEmail = email.toLowerCase();
   const currUser = await users.findOne({ email: normalizedEmail });
+  console.log(currUser);
+  
   return currUser;
 }
