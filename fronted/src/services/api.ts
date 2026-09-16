@@ -1,21 +1,69 @@
-import { create } from "zustand";
 
-type AuthStore = {
-    token: string | null;
-    setToken: (token: string) => void;
-    logout: () => void;
-};
+const API_URL = "http://localhost:3001";
 
-export const useAuthStore = create<AuthStore>((set) => ({
-    token: localStorage.getItem("token"),
+export async function registerUser(
+    username: string,
+    email: string,
+    password: string
+) {
+    const response = await fetch(`${API_URL}/auth/register`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            username,
+            email,
+            password,
+        }),
+    });
 
-    setToken: (token) => {
-        localStorage.setItem("token", token);
-        set({ token });
-    },
+    const data = await response.json();
 
-    logout: () => {
-        localStorage.removeItem("token");
-        set({ token: null });
-    },
-}));
+    if (!response.ok) {
+        throw new Error(data.message || "Registration failed");
+    }
+
+    return data;
+}
+
+export async function loginUser(
+    email: string,
+    password: string
+) {
+    const response = await fetch(`${API_URL}/auth/login`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            email,
+            password,
+        }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.message || "Login failed");
+    }
+
+    return data;
+}
+
+export async function getUsers(token: string) {
+    const response = await fetch(`${API_URL}/auth/users`, {
+        method: "GET",
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.message || "Failed to get users");
+    }
+
+    return data;
+}
