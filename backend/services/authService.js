@@ -1,9 +1,9 @@
-import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
-export async function hashPassword(password){
-    return bcrypt.hash(password, 10)
+export function generateToken(id){
+    return jwt.sign({id}, process.env.JWT_SECRET)
 }
 
-export async function comparePassword(password, hash){
-    return bcrypt.compare(password, hash)
+export function verifyToken(token){
+    return jwt.verify(token, process.env.JWT_SECRET)
 }

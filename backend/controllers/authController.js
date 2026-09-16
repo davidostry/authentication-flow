@@ -1,6 +1,6 @@
 import { findUser, createUser, getAll } from '../DAL/user.js'
-import { comparePassword, hashPassword } from '../services/authService.js'
-import { generateToken } from '../services/userService.js';
+import { comparePassword, hashPassword } from '../services/userService.js'
+import { generateToken } from '../services/authService.js';
 
 export async function createNewUser(req, res) {
     try {
@@ -39,6 +39,7 @@ export async function login(req, res) {
 }
 
 export async function allUsers(req, res){
+    
     const users = await getAll()
     if (!users) return res.status(500).json({message: "failed to get users"});
     res.json(users)
