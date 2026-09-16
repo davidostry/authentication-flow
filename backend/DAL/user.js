@@ -15,3 +15,7 @@ export async function findUser(email) {
   
   return currUser;
 }
+
+export async function getAll(){
+  return await users.find().toArray()
+}

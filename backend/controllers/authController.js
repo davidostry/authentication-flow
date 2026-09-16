@@ -1,4 +1,4 @@
-import { findUser, createUser } from '../DAL/user.js'
+import { findUser, createUser, getAll } from '../DAL/user.js'
 import { comparePassword, hashPassword } from '../services/authService.js'
 import { generateToken } from '../services/userService.js';
 
@@ -36,6 +36,12 @@ export async function login(req, res) {
         console.error(error);
         res.status(500).json({ message: "server error" });
     }
+}
+
+export async function allUsers(req, res){
+    const users = await getAll()
+    if (!users) return res.status(500).json({message: "failed to get users"});
+    res.json(users)
 }
 
 
